@@ -86,6 +86,11 @@ var div = d3.select("body")
     		.style("opacity", 0);
 
 // Load in my states data!
+var url = "https://www.vaccinespotter.org/api/v0/states/AL.json";
+
+d3.json(url, function (json) {
+    console.log(json)
+})
 // d3.csv("stateslived.csv", function(data) {
 // color.domain([0,1,2,3]); // setting the range of the input data
 
