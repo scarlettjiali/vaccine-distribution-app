@@ -1,3 +1,6 @@
-# will be boilerplate for a simple-react-maps app using swr
+```
+npm install
+npm start
+```
 
-from a github project - wobsoriano/election2020
+
