@@ -14,15 +14,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import edu.gatech.seclass.vaccinefinderapp.R;
 
-public class HomeFragment extends Fragment {
+public class CovidDashboardFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private CovidDashboardViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+                new ViewModelProvider(this).get(CovidDashboardViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_covid_dashboard, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

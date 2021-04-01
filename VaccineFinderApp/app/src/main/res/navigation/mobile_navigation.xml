@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="edu.gatech.seclass.vaccinefinderapp.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="edu.gatech.seclass.vaccinefinderapp.ui.home.CovidDashboardFragment"
+        android:label="@string/title_covid_dashboard"
+        tools:layout="@layout/fragment_covid_dashboard" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="edu.gatech.seclass.vaccinefinderapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="edu.gatech.seclass.vaccinefinderapp.ui.dashboard.VaccineMapFragment"
+        android:label="@string/title_vaccine_map"
+        tools:layout="@layout/fragment_vaccine_map" />
 
     <fragment
         android:id="@+id/navigation_notifications"
