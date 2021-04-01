@@ -1,0 +1,64 @@
+:root {
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+}
+
+path {
+  pointer-events: all;
+}
+path:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 1.875rem;
+  }
+}
+
+p {
+  margin: 0.2rem;
+}
+
+.tooltip {
+  opacity: 1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  letter-spacing: 0.025em;
+}
+
+.state {
+  font-weight: 500;
+  font-size: var(--text-base);
+}
+
+.elect-total {
+  font-size: var(--text-sm);
+}
+
+.eevp {
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: #718096;
+}
+
+.winner-name {
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: #2f855a;
+}
