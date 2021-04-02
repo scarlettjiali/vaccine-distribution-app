@@ -43,7 +43,7 @@ function App() {
         )}
       </ReactTooltip>
         {vender && vender?.data.features.slice(0, Math.min(vender?.data.features.length, 10)).map((store, i) => {
-            return <div className='card'><b>{store.properties.name}</b>: {store.properties.address}, {store.properties.city} {store.properties.state}</div>
+            return <div className='card' key={i}><b>{store.properties.name}</b>: {store.properties.address}, {store.properties.city} {store.properties.state}</div>
         })}
     </div>
   );
