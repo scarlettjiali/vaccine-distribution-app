@@ -2,6 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import ReactTooltip from 'react-tooltip';
 import MapChart from './components/MapChart';
 import './App.css';
+import LocationCard from "./components/LocationCard";
 
 function App() {
     const [content, setContent] = useState(null);
@@ -40,9 +41,7 @@ function App() {
                     </>
                 )}
             </ReactTooltip>
-            {vender && vender?.data.features.slice(0, Math.min(vender?.data.features.length, 10)).map((store, i) => {
-                return <div className='card'><b>{store.properties.name}</b>: {store.properties.address}, {store.properties.city} {store.properties.state}</div>
-            })}
+            {vender && <LocationCard vender={vender} />}
         </div>
     );
 }
