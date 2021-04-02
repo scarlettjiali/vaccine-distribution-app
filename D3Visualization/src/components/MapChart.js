@@ -7,9 +7,7 @@ import {
   Marker,
   Annotation,
 } from 'react-simple-maps';
-import useSWR from 'swr';
 import ReactTooltip from 'react-tooltip';
-import { fetchCandidates, fetchResults } from '../api';
 import allStates from '../data/allstates.json';
 import * as constants from '../constants';
 
@@ -27,7 +25,7 @@ const offsets = {
   DC: [49, 21],
 };
 
-const MapChart = ({ setTooltipContent }) => {
+const MapChart = ({ setTooltipContent, setUSState }) => {
   const [vaccineData, setVaccineData] = useState(null);
   useEffect(() => {
     fetch('https://www.vaccinespotter.org/api/v0/states.json')
@@ -50,6 +48,11 @@ const MapChart = ({ setTooltipContent }) => {
     });
     ReactTooltip.rebuild();
   };
+
+  const handleClick = (geoId) => {
+    const cur = allStates.find((s) => s.val === geoId);
+    setUSState(cur.id) // TX, CA
+  }
 
   return (
     <ComposableMap data-tip="" projection="geoAlbersUsa">
@@ -76,9 +79,8 @@ const MapChart = ({ setTooltipContent }) => {
                     outline: 'none',
                   },
                 }}
-                onMouseEnter={() =>
-                  handleMouseEnter(geo.id, geo.properties.name)
-                }
+                onMouseEnter={() => handleMouseEnter(geo.id, geo.properties.name)}
+                onClick={() => handleClick(geo.id)}
                 onMouseLeave={() => setTooltipContent(null)}
               />
             ))}

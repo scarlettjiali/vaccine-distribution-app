@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import ReactTooltip from 'react-tooltip';
 import Title from './components/Title';
 import MapChart from './components/MapChart';
@@ -6,6 +6,16 @@ import './App.css';
 
 function App() {
   const [content, setContent] = useState(null);
+  const [state, setUSState] = useState(null);
+  const [vender, setVender] = useState(null);
+
+  console.log(vender)
+
+  useEffect(() => {
+    fetch(`https://www.vaccinespotter.org/api/v0/states/${state}.json`)
+      .then(response => response.json())
+      .then(data => setVender({data}));
+  }, [state]);
 
   return (
     <div className="container">
@@ -13,7 +23,7 @@ function App() {
         <Suspense fallback={<>Loading...</>}>
           <Title />
         </Suspense>
-        <MapChart setTooltipContent={setContent} />
+        <MapChart setTooltipContent={setContent} setUSState={setUSState} />
       </Suspense>
       <ReactTooltip
         className="tooltip"
@@ -32,6 +42,9 @@ function App() {
           </>
         )}
       </ReactTooltip>
+        {vender && vender?.data.features.slice(0, Math.min(vender?.data.features.length, 10)).map((store, i) => {
+            return <div className='card'><b>{store.properties.name}</b>: {store.properties.address}, {store.properties.city} {store.properties.state}</div>
+        })}
     </div>
   );
 }
