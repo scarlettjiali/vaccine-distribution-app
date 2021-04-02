@@ -45,7 +45,7 @@ const Header = ({ vender }) => {
                         return <p key={i}>{appointment.type} available at {appointment.time}. <a href={listOfAppointments.properties?.url}>Visit website</a></p>
                     })}
                 </ul>
-                <LocalVaccineMap storeData={sliceData} />
+                <LocalVaccineMap storeData={sliceData} currentState={vender} />
                 <button type="button" className="btn btn-danger" onClick={onClose}>close</button>
             </Modal>
         </div>
