@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
+import LocalVaccineMap from "./LocalVaccineMap";
 
 // constants
 const DISPLAY_LENGTH = 8
@@ -12,18 +13,14 @@ const Header = ({ vender }) => {
     const sliceData = dataWithAppointments.slice(0, Math.min(vender?.data.features.length, DISPLAY_LENGTH))
     const rows = [...Array(Math.ceil(sliceData.length / COL_PER_ROW))];
     const storeRows = rows.map((row, idx) => sliceData.slice(idx * COL_PER_ROW, idx * COL_PER_ROW + COL_PER_ROW));
-
     const onClose = () => {
         setIsOpen(false)
     }
     const onOpen = (e) => {
-        console.log(e)
         setListOfAppointments(e)
         setIsOpen(true)
     }
-
     const convertBoolean = (b) => {
-        console.log(b)
         return (b === true) ? 'Yes' : 'No'
     }
     return (
@@ -48,6 +45,7 @@ const Header = ({ vender }) => {
                         return <p key={i}>{appointment.type} available at {appointment.time}. <a href={listOfAppointments.properties?.url}>Visit website</a></p>
                     })}
                 </ul>
+                <LocalVaccineMap storeData={sliceData} />
                 <button type="button" className="btn btn-danger" onClick={onClose}>close</button>
             </Modal>
         </div>

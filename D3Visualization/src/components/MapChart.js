@@ -11,6 +11,9 @@ import {
 import ReactTooltip from 'react-tooltip';
 import allStates from '../data/allstates.json';
 
+
+// reference: https://www.react-simple-maps.io/examples/usa-counties-choropleth-quantize/
+// reference: https://www.react-simple-maps.io/examples/usa-with-state-labels/
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 
 const offsets = {
@@ -100,7 +103,7 @@ const MapChart = ({ setTooltipContent, setUSState }) => {
                                     />
                                     <g key={geo.rsmKey + '-name'}>
                                         {cur &&
-                                        centroid[0] > -168 &&
+                                        centroid[0] > -160 &&
                                         centroid[0] < -67 &&
                                         (Object.keys(offsets).indexOf(cur.id) === -1 ? (
                                             <Marker coordinates={centroid}>
