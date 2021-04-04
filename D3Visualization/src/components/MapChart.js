@@ -77,7 +77,9 @@ const MapChart = ({ setTooltipContent, setUSState }) => {
                 {({ geographies }) => (
                     <>
                         {geographies.map((geo) => {
+                            
                             const centroid = geoCentroid(geo);
+                            console.log("___++",centroid)
                             const cur = allStates.find((s) => s.val === geo.id);
                             const stateData = vaccineData?.data.find((e) => e.code === cur.id)
                             return (

@@ -7,6 +7,7 @@ const DISPLAY_LENGTH = 8
 const COL_PER_ROW = 4
 
 const Header = ({ vender }) => {
+    // console.log("mao---",vender)
     const [isOpen, setIsOpen] = useState(false)
     const [listOfAppointments, setListOfAppointments] = useState([])
     const dataWithAppointments = vender?.data?.features.filter((v) => v.properties.appointments !== null && v.properties.appointments?.length !== 0)
@@ -27,11 +28,13 @@ const Header = ({ vender }) => {
         <div className='cardGrid'>
             {storeRows.map((stores, idx) => (
                 <div className="row" key={idx}>
-                    {stores.map(s => <div key={s.properties.address} className="column">
+                    {stores.map(s => 
+                    { console.log("sto---",s)
+                    return <div key={s.properties.address} className="column">
                         <div className="card"><b>{s.properties.name}</b>{s.properties.address}, {s.properties.city} {s.properties.state}
                         <button type="button" className="btn btn-danger" onClick={() => onOpen(s)}>Info</button>
                         </div>
-                    </div>
+                    </div>}
                 )}
                 </div>)
             )}
