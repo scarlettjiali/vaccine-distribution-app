@@ -9,22 +9,26 @@ function Appointment() {
     const [content, setContent] = useState(null);
     const [state, setUSState] = useState(null);
     const [vender, setVender] = useState(null);
-
-    
-
     useEffect(() => {
         fetch(`https://www.vaccinespotter.org/api/v0/states/${state}.json`)
             .then(response => response.json())
             .then(data => setVender({data}));
     }, [state]);
     console.log(vender,state)
+    const [vaccineData, setVaccineData] = useState(null);
+    useEffect(() => {
+        fetch('https://www.vaccinespotter.org/api/v0/states.json')
+            .then(response => response.json())
+            .then(data => setVaccineData({data}));
+    }, [])
+    const type="appointment";
     return (
         <div className="container">
             <Suspense fallback={<div>Fetching results...</div>}>
                 <Suspense fallback={<>Loading...</>}>
                     <h1>Covid 19 Vaccine Tracker</h1>
                 </Suspense>
-                <MapChart setTooltipContent={setContent} setUSState={setUSState} />
+                <MapChart setTooltipContent={setContent} setUSState={setUSState} data={vaccineData} case={type}/>
             </Suspense>
             <ReactTooltip
                 className="tooltip"

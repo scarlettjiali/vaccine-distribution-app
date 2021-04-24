@@ -9,18 +9,18 @@ function App() {
             .then(response => response.json())
             .then(data => console.log("a---",data));
 
-    // console.log("-----",data)
-
+    console.log("-----")
+    console.log("-----")
     return (
         <Tabs>
             <div>
-            <Tab><button>Appointment</button></Tab>
-            <Tab><button>Vaccination</button></Tab>
-            <Tab><button>Cases</button></Tab>
+            <Tab key={1}><button>Appointment</button></Tab>
+            <Tab key={2}><button>Vaccination</button></Tab>
+            <Tab key={3}><button>Cases</button></Tab>
             </div>
-            <Panel><p><Appointment/></p></Panel>
-            <Panel><p><Vaccination/></p></Panel>
-            <Panel><p><Cases/></p></Panel>
+            <Panel key={1}><Appointment/></Panel>
+            <Panel key={2}><Vaccination/></Panel>
+            <Panel key={3}><Cases/></Panel>
         </Tabs>
       );
 }
