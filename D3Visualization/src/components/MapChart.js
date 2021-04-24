@@ -31,15 +31,15 @@ const offsets = {
 const colorScale = scaleQuantize()
     .domain([0, 1000])
     .range([
-        "#f9fbfd",
-        "#dce7f3",
-        "#b0cae5",
-        "#92b6db",
-        "#6699cc",
-        "#578fc7",
-        "#3e7cb9",
-        "#2f5e8d",
-        "#1b3752"
+        "#b0b8d0",
+        "#a79bd5",
+        "#9880d1",
+        "#8667c9",
+        "#7250bc",
+        "#5c3aac",
+        "#442599",
+        "#2a1285",
+        "#000070"
     ]);
 
 const MapChart = ({ setTooltipContent, setUSState }) => {

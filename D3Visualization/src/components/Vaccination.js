@@ -1,6 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
-import ReactTooltip from 'react-tooltip';
-import MapChart from './MapChart';
+import { useState, useEffect} from 'react';
 import '../App.css';
 import { scaleQuantize } from "d3-scale";
 import {
@@ -10,7 +8,6 @@ import {
     Marker,
     Annotation,
 } from 'react-simple-maps';
-import LocationCard from "./LocationCard";
 import allStates from '../data/allstates.json';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
@@ -32,10 +29,10 @@ function Vaccination() {
     //     ReactTooltip.rebuild();
     // };
 
-    const handleClick = (geoId) => {
-        const cur = allStates.find((s) => s.val === geoId);
-        setUSState(cur.id)
-    }
+    // const handleClick = (geoId) => {
+    //     const cur = allStates.find((s) => s.val === geoId);
+    //     setUSState(cur.id)
+    // }
 
     const offsets = {
         VT: [50, -8],
@@ -58,16 +55,17 @@ function Vaccination() {
     const colorScale = scaleQuantize()
     .domain([0, 1000000])
     .range([
-        "#f9fbfd",
-        "#dce7f3",
-        "#b0cae5",
-        "#92b6db",
-        "#6699cc",
-        "#578fc7",
-        "#3e7cb9",
-        "#2f5e8d",
-        "#1b3752"
+        "#F4F4CC",
+        "#E7E3A3",
+        "#C3D977",
+        "#8BC94C",
+        "#44B823",
+        "#1EA31C",
+        "#168E2F",
+        "#11783C",
+        "#0C6142",
     ]);
+
     return (
         <ComposableMap data-tip="" projection="geoAlbersUsa">
            <Geographies geography={geoUrl}>
