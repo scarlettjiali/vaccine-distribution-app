@@ -77,7 +77,7 @@ function Header() {
                 className="m-0"
               >
                 <i className="nc-icon nc-palette"></i>
-                <span className="d-lg-none ml-1">Dashboard</span>
+                <span className="d-lg-none ml-1">DVA Fall 20 - COVID-19 Visualization Dashboard</span>
               </Nav.Link>
             </Nav.Item>
             <Dropdown as={Nav.Item}>
@@ -126,14 +126,6 @@ function Header() {
               </Dropdown.Menu>
             </Dropdown>
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <i className="nc-icon nc-zoom-split"></i>
-                <span className="d-lg-block"> Search</span>
-              </Nav.Link>
             </Nav.Item>
           </Nav>
           <Nav className="ml-auto" navbar>

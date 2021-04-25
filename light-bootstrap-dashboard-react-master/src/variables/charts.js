@@ -1,3 +1,6 @@
+// ##############################
+// // // javascript library for creating charts
+// #############################
 var Chartist = require("chartist");
 
 // ##############################
@@ -15,11 +18,7 @@ var delays2 = 80,
 
 
 
-const dailySalesChart = {
-    data: {
-        labels: ["M", "T", "W", "T", "F", "S", "S"],
-        series: [[12, 17, 7, 17, 23, 18, 38]]
-    },
+const lineCharts = {
     options: {
         lineSmooth: Chartist.Interpolation.cardinal({
             tension: 0
@@ -69,13 +68,14 @@ const dailySalesChart = {
 // // // Email Subscriptions
 // #############################
 
-const emailsSubscriptionChart = {
+const positiveChart = {
     options: {
         axisX: {
-            showGrid: true
+            showGrid: true,
+            offset: 30
         },
         low: 0,
-        high: 30000000,
+        high: 40000000,
         chartPadding: {
             top: 0,
             right: 3,
@@ -83,7 +83,7 @@ const emailsSubscriptionChart = {
             left: 0
         },
         axisY: {
-            offset: 70
+            offset: 100
         },
         plugins: [
             Chartist.plugins.tooltip()
@@ -175,11 +175,14 @@ const vaccineChart = {
 // // // Completed Tasks
 // #############################
 
-const completedTasksChart = {
+const pointCharts = {
     options: {
         lineSmooth: Chartist.Interpolation.cardinal({
             tension: 0
         }),
+        axisX: {
+            showGrid: true
+        },
         low: 0,
         high: 150000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         chartPadding: {
@@ -228,7 +231,7 @@ const completedTasksChart = {
 
 module.exports = {
     vaccineChart,
-    dailySalesChart,
-    emailsSubscriptionChart,
-    completedTasksChart
+    lineCharts,
+    positiveChart,
+    pointCharts
 };

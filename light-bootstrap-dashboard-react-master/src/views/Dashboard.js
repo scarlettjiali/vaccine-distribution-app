@@ -3,18 +3,10 @@ import { useState, useEffect } from 'react';
 import ChartistGraph from "react-chartist";
 // react-bootstrap components
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
-  Table,
   Container,
   Row,
   Col,
-  Form,
-  OverlayTrigger,
-  Tooltip,
 } from "react-bootstrap";
 
 // eslint-disable-next-line no-unused-vars
@@ -25,12 +17,14 @@ const vaccineUrl = 'https://cdc-vaccination-history.datasette.io/cdc.json?sql=se
 
 import {
   vaccineChart,
-  emailsSubscriptionChart,
-  completedTasksChart
+  lineCharts,
+  positiveChart,
+  pointCharts
 } from "variables/charts";
 
-function Dashboard() {
 
+
+function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [positiveData, setPositiveData] = useState(null);
   const [hospitalData, setHospitalData] = useState(null);
@@ -76,14 +70,6 @@ function Dashboard() {
         .then((resp) => {
           setDailyIncrease(resp[0])
         })
-    // 0: "Date"
-    // 1: "Location"
-    // 2: "ShortName"
-    // 3: "LongName"
-    // 4: "Census2019"
-    // 5: "Doses_Distributed"
-    // 6: "Doses_Administered"
-    // vaccine data
     makeVaccineCalls()
         .then((resp) => {
           const date = resp.rows.map(e => e[0])
@@ -152,9 +138,16 @@ function Dashboard() {
         }
       }).reverse()
 
+      const deathCurrently = resp.map(e => {
+        return {
+          "meta" : "Total Death Case",
+          "value" : e.death
+        }
+      }).reverse()
+
       const positive = {
         labels: allMonths,
-        series: [positiveCurrently, negativeCurrently]
+        series: [positiveCurrently, negativeCurrently, deathCurrently]
       }
       const hospitalize = {
         labels: allMonths,
@@ -170,19 +163,24 @@ function Dashboard() {
     <>
       <Container fluid>
         <Row>
-          <Col lg="3" sm="6">
+          <Col lg="4" sm="3">
             <Card className="card-stats">
               <Card.Body>
                 <Row>
-                  <Col xs="5">
+                  <Col xs="8">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-light-3 text-success"></i>
+                      {pieData && <ChartistGraph
+                          className="ct-chart"
+                          data={pieData}
+                          type="Pie"
+                      />}
                     </div>
                   </Col>
-                  <Col xs="7">
+                  <Col xs="3">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
-                      <Card.Title as="h4">$ 1,345</Card.Title>
+                      <i className="nc-icon nc-chart-pie-36 text-danger"></i>
+                      <p className="card-category">Covid 19 Total Vaccine Population</p>
+                      <Card.Title as="h4">{percent} <small>%</small></Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -191,7 +189,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
-                  Last day
+                  Just Checked Today!
                 </div>
               </Card.Footer>
             </Card>
@@ -202,13 +200,15 @@ function Dashboard() {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-vector text-danger"></i>
+                      <i className="nc-icon nc-bulb-63 text-danger"></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Errors</p>
-                      <Card.Title as="h4">23</Card.Title>
+                      <p className="card-category">Daily Positive Case Increase</p>
+                      {dailyIncrease && <Card.Title as="h3">{dailyIncrease.positiveIncrease}</Card.Title>}
+                      <p className="card-category">Daily Death Case Increase</p>
+                      {dailyIncrease && <Card.Title as="h3">{dailyIncrease.deathIncrease}</Card.Title>}
                     </div>
                   </Col>
                 </Row>
@@ -216,7 +216,7 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-clock-o mr-1"></i>
+                  <i className="fas fa-redo mr-1"></i>
                   In the last hour
                 </div>
               </Card.Footer>
@@ -228,13 +228,13 @@ function Dashboard() {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-favourite-28 text-primary"></i>
+                      <i className="far fa-calendar-alt mr-1 text-warning"></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Followers</p>
-                      <Card.Title as="h4">+45K</Card.Title>
+                      <p className="card-category">Daily Increase for COVID Vaccinated Population</p>
+                      <Card.Title as="h3">+{increase}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -253,7 +253,7 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Users Behavior</Card.Title>
+                <Card.Title as="h4">Daily US Vaccine Population</Card.Title>
                 <p className="card-category">24 Hours performance</p>
               </Card.Header>
               <Card.Body>
@@ -271,445 +271,81 @@ function Dashboard() {
               <Card.Footer>
                 <div className="legend">
                   <i className="fas fa-circle text-info"></i>
-                  Open <i className="fas fa-circle text-danger"></i>
-                  Click <i className="fas fa-circle text-warning"></i>
-                  Click Second Time
+                  Vaccine Distributed <i className="fas fa-circle text-danger"></i>
+                  Vaccine Administrated
                 </div>
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-history"></i>
-                  Updated 3 minutes ago
+                  Data loaded just now from -  <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
                 </div>
               </Card.Footer>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Email Statistics</Card.Title>
-                <p className="card-category">Last Campaign Performance</p>
-              </Card.Header>
-              <Card.Body>
-                <div
-                  className="ct-chart ct-perfect-fourth"
-                  id="chartPreferences"
-                >
-                  <ChartistGraph
-                    data={{
-                      labels: ["40%", "20%", "40%"],
-                      series: [40, 20, 40],
-                    }}
-                    type="Pie"
-                  />
-                </div>
-                <div className="legend">
-                  <i className="fas fa-circle text-info"></i>
-                  Open <i className="fas fa-circle text-danger"></i>
-                  Bounce <i className="fas fa-circle text-warning"></i>
-                  Unsubscribe
-                </div>
-                <hr></hr>
-                <div className="stats">
-                  <i className="far fa-clock"></i>
-                  Campaign sent 2 days ago
-                </div>
-              </Card.Body>
             </Card>
           </Col>
         </Row>
         <Row>
-          <Col md="6">
+          <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">2017 Sales</Card.Title>
-                <p className="card-category">All products including Taxes</p>
+                <Card.Title as="h4">Monthly COVID Positive/Negative Cases</Card.Title>
+                <p className="card-category">Over the past year, for each month it represent the amount of positive & negative cases. Hover on the lines and you'll see actual numbe</p>
               </Card.Header>
               <Card.Body>
                 <div className="ct-chart" id="chartActivity">
-                  <ChartistGraph
-                    data={{
-                      labels: [
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "Mai",
-                        "Jun",
-                        "Jul",
-                        "Aug",
-                        "Sep",
-                        "Oct",
-                        "Nov",
-                        "Dec",
-                      ],
-                      series: [
-                        [
-                          542,
-                          443,
-                          320,
-                          780,
-                          553,
-                          453,
-                          326,
-                          434,
-                          568,
-                          610,
-                          756,
-                          895,
-                        ],
-                        [
-                          412,
-                          243,
-                          280,
-                          580,
-                          453,
-                          353,
-                          300,
-                          364,
-                          368,
-                          410,
-                          636,
-                          695,
-                        ],
-                      ],
-                    }}
-                    type="Bar"
-                    options={{
-                      seriesBarDistance: 10,
-                      axisX: {
-                        showGrid: false,
-                      },
-                      height: "245px",
-                    }}
-                    responsiveOptions={[
-                      [
-                        "screen and (max-width: 640px)",
-                        {
-                          seriesBarDistance: 5,
-                          axisX: {
-                            labelInterpolationFnc: function (value) {
-                              return value[0];
-                            },
-                          },
-                        },
-                      ],
-                    ]}
-                  />
+                  {positiveData && <ChartistGraph
+                      className="ct-chart"
+                      data={positiveData}
+                      type="Bar"
+                      options={positiveChart.options}
+                      responsiveOptions={positiveChart.responsiveOptions}
+                      listener={positiveChart.animation}
+                  />}
                 </div>
               </Card.Body>
               <Card.Footer>
                 <div className="legend">
                   <i className="fas fa-circle text-info"></i>
-                  Tesla Model S <i className="fas fa-circle text-danger"></i>
-                  BMW 5 Series
+                  Total Positive Case <i className="fas fa-circle text-danger"></i>
+                  Total Negative Case  <i className="fas fa-circle text-warning"></i>
+                  Total Death Case
                 </div>
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-check"></i>
-                  Data information certified
+                  Data loaded just now from -  <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
                 </div>
               </Card.Footer>
             </Card>
           </Col>
-          <Col md="6">
-            <Card className="card-tasks">
+        </Row>
+        <Row>
+          <Col md="12">
+            <Card>
               <Card.Header>
-                <Card.Title as="h4">Tasks</Card.Title>
-                <p className="card-category">Backend development</p>
+                <Card.Title as="h4">Monthly Hospitalize/ICU/Ventilator Rate</Card.Title>
+                <p className="card-category"> Over the past year, for each month it represent the population of Hospitalize and population in ICU & on Ventilator. Hover on the lines and you'll see actual number</p>
               </Card.Header>
               <Card.Body>
-                <div className="table-full-width">
-                  <Table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <Form.Check className="mb-1 pl-0">
-                            <Form.Check.Label>
-                              <Form.Check.Input
-                                defaultValue=""
-                                type="checkbox"
-                              ></Form.Check.Input>
-                              <span className="form-check-sign"></span>
-                            </Form.Check.Label>
-                          </Form.Check>
-                        </td>
-                        <td>
-                          Sign contract for "What are conference organizers
-                          afraid of?"
-                        </td>
-                        <td className="td-actions text-right">
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-488980961">
-                                Edit Task..
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="info"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-506045838">Remove..</Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <Form.Check className="mb-1 pl-0">
-                            <Form.Check.Label>
-                              <Form.Check.Input
-                                defaultChecked
-                                defaultValue=""
-                                type="checkbox"
-                              ></Form.Check.Input>
-                              <span className="form-check-sign"></span>
-                            </Form.Check.Label>
-                          </Form.Check>
-                        </td>
-                        <td>
-                          Lines From Great Russian Literature? Or E-mails From
-                          My Boss?
-                        </td>
-                        <td className="td-actions text-right">
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-537440761">
-                                Edit Task..
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="info"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-21130535">Remove..</Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <Form.Check className="mb-1 pl-0">
-                            <Form.Check.Label>
-                              <Form.Check.Input
-                                defaultChecked
-                                defaultValue=""
-                                type="checkbox"
-                              ></Form.Check.Input>
-                              <span className="form-check-sign"></span>
-                            </Form.Check.Label>
-                          </Form.Check>
-                        </td>
-                        <td>
-                          Flooded: One year later, assessing what was lost and
-                          what was found when a ravaging rain swept through
-                          metro Detroit
-                        </td>
-                        <td className="td-actions text-right">
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-577232198">
-                                Edit Task..
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="info"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-773861645">Remove..</Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <Form.Check className="mb-1 pl-0">
-                            <Form.Check.Label>
-                              <Form.Check.Input
-                                defaultChecked
-                                type="checkbox"
-                              ></Form.Check.Input>
-                              <span className="form-check-sign"></span>
-                            </Form.Check.Label>
-                          </Form.Check>
-                        </td>
-                        <td>
-                          Create 4 Invisible User Experiences you Never Knew
-                          About
-                        </td>
-                        <td className="td-actions text-right">
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-422471719">
-                                Edit Task..
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="info"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-829164576">Remove..</Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <Form.Check className="mb-1 pl-0">
-                            <Form.Check.Label>
-                              <Form.Check.Input
-                                defaultValue=""
-                                type="checkbox"
-                              ></Form.Check.Input>
-                              <span className="form-check-sign"></span>
-                            </Form.Check.Label>
-                          </Form.Check>
-                        </td>
-                        <td>Read "Following makes Medium better"</td>
-                        <td className="td-actions text-right">
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-160575228">
-                                Edit Task..
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="info"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-922981635">Remove..</Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <Form.Check className="mb-1 pl-0">
-                            <Form.Check.Label>
-                              <Form.Check.Input
-                                defaultValue=""
-                                disabled
-                                type="checkbox"
-                              ></Form.Check.Input>
-                              <span className="form-check-sign"></span>
-                            </Form.Check.Label>
-                          </Form.Check>
-                        </td>
-                        <td>Unfollow 5 enemies from twitter</td>
-                        <td className="td-actions text-right">
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-938342127">
-                                Edit Task..
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="info"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            overlay={
-                              <Tooltip id="tooltip-119603706">Remove..</Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
+                <div className="ct-chart">
+                  {hospitalData &&<ChartistGraph
+                      data={hospitalData}
+                      type="Line"
+                      options={pointCharts.options}
+                      listener={pointCharts.animation}
+                  />}
                 </div>
               </Card.Body>
               <Card.Footer>
+                <div className="legend">
+                  <i className="fas fa-circle text-info"></i>
+                  Currently Hospitalized Case <i className="fas fa-circle text-danger"></i>
+                  Currently In ICU Case  <i className="fas fa-circle text-warning"></i>
+                  Currently On Ventilator Case
+                </div>
                 <hr></hr>
                 <div className="stats">
-                  <i className="now-ui-icons loader_refresh spin"></i>
-                  Updated 3 minutes ago
+                  <i className="fas fa-check"></i>
+                  Data loaded just now from -  <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
                 </div>
               </Card.Footer>
             </Card>
