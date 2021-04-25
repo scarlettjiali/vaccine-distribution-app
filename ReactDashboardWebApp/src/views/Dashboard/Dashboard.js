@@ -28,7 +28,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
+import Death from "./Death.js";
 import { bugs, website, server } from "variables/general.js";
 
 import {
@@ -119,6 +119,11 @@ export default function Dashboard() {
               </div>
             </CardFooter>
           </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+      <GridItem xs={12} sm={12} md={4}>
+      <Death/>
         </GridItem>
       </GridContainer>
       <GridContainer>
