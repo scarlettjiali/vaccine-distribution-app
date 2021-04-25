@@ -249,14 +249,14 @@ export default function Dashboard() {
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
                 <CardHeader color="info">
-                  <ChartistGraph
+                  {vaccineData && <ChartistGraph
                       className="ct-chart"
                       data={vaccineData}
                       type="Bar"
                       options={vaccineChart.options}
                       responsiveOptions={vaccineChart.responsiveOptions}
                       listener={vaccineChart.animation}
-                  />
+                  />}
                 </CardHeader>
                 <CardBody>
                   <h4 className={classes.cardTitle}>Daily US Vaccine Population</h4>
@@ -312,13 +312,13 @@ export default function Dashboard() {
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
                 <CardHeader color="info">
-                  <ChartistGraph
+                  {hospitalData &&<ChartistGraph
                       className="ct-chart"
                       data={hospitalData}
                       type="Line"
                       options={completedTasksChart.options}
                       listener={completedTasksChart.animation}
-                  />
+                  />}
                 </CardHeader>
                 <CardBody>
                   <h4 className={classes.cardTitle}>Monthly Hospitalize/ICU Rate</h4>
