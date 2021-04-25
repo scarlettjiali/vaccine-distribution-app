@@ -31,6 +31,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import Death from "./Death.js";
 import { bugs, website, server } from "variables/general.js";
 
+import * as ChartistTooltips from 'chartist-plugin-tooltips';
+
 import {
   emailsSubscriptionChart,
   completedTasksChart
@@ -46,8 +48,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [positiveData, setPositiveData] = useState(null);
   const [hospitalData, setHospitalData] = useState(null);
-
-  console.log(positiveData)
 
   const allMonths = ["20 Apr", "20 May", "20 Jun", "20 Jul", "20 Aug", "20 Sep", "20 Oct", "20 Nov", "20 Dec", "21 Jan", "21 Feb", "21 Mar"]
   const addZ = (n) => { return n < 10 ? '0' + n : '' + n; }
@@ -80,6 +80,13 @@ export default function Dashboard() {
         }
       }).reverse()
 
+      const ventilatorCurrently = resp.map(e => {
+        return {
+          "meta" : "Ventilator Population",
+          "value" : e.onVentilatorCurrently
+        }
+      }).reverse()
+
       const positiveCurrently = resp.map(e => {
         return {
           "meta" : "Total Positive Case",
@@ -87,23 +94,21 @@ export default function Dashboard() {
         }
       }).reverse()
 
-      const deathCurrently = resp.map(e => {
+      const negativeCurrently = resp.map(e => {
         return {
-          "meta" : "Total Death Case",
-          "value" : e.death
+          "meta" : "Total Negative Case",
+          "value" : e.negative
         }
       }).reverse()
 
       const positive = {
         labels: allMonths,
-        series: [positiveCurrently, deathCurrently]
+        series: [positiveCurrently, negativeCurrently]
       }
       const hospitalize = {
         labels: allMonths,
-        series: [hospitalCurrently, icuCurrently]
+        series: [hospitalCurrently, icuCurrently, ventilatorCurrently]
       }
-
-      console.log(hospitalize)
       setPositiveData(positive)
       setHospitalData(hospitalize)
     }).finally(() => {
@@ -119,7 +124,7 @@ export default function Dashboard() {
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
-                <CardHeader color="success">
+                <CardHeader color="primary">
                   <ChartistGraph
                       className="ct-chart"
                       data={positiveData}
@@ -130,8 +135,8 @@ export default function Dashboard() {
                   />
                 </CardHeader>
                 <CardBody>
-                  <h4 className={classes.cardTitle}>Monthly COVID Positive Cases</h4>
-                  <p className={classes.cardCategory}>Over the past year, for each month it represent the amount of positive cases</p>
+                  <h4 className={classes.cardTitle}>Monthly COVID Positive/Negative Cases</h4>
+                  <p className={classes.cardCategory}>Over the past year, for each month it represent the amount of positive & negative cases. Hover on the lines and you'll see actual number</p>
                 </CardBody>
                 <CardFooter chart>
                   <div className={classes.stats}>
@@ -156,7 +161,7 @@ export default function Dashboard() {
                 </CardFooter>
               </Card>
             </GridItem>
-            
+
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
                 <CardHeader color="info">
@@ -170,7 +175,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardBody>
                   <h4 className={classes.cardTitle}>Monthly Hospitalize/ICU Rate</h4>
-                  <p className={classes.cardCategory}>Over the past year, for each month it represent the population of Hospitalize and population in ICU.</p>
+                  <p className={classes.cardCategory}>Over the past year, for each month it represent the population of Hospitalize and population in ICU & on Ventilator. Hover on the lines and you'll see actual number</p>
                 </CardBody>
                 <CardFooter chart>
                   <div className={classes.stats}>

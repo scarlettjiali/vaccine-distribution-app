@@ -34,8 +34,7 @@ const dailySalesChart = {
       right: 0,
       bottom: 0,
       left: 0
-    },
-   
+    }
   },
   // for animation
   animation: {
@@ -76,19 +75,22 @@ const dailySalesChart = {
 const emailsSubscriptionChart = {
   options: {
     axisX: {
-      showGrid: false
+      showGrid: true
     },
     low: 0,
-    high: 25000000,
+    high: 30000000,
     chartPadding: {
       top: 0,
-      right: 10,
+      right: 3,
       bottom: 0,
       left: 0
     },
     axisY: {
       offset: 70
     },
+    plugins: [
+      Chartist.plugins.tooltip()
+    ]
   },
   responsiveOptions: [
     [
@@ -130,7 +132,7 @@ const completedTasksChart = {
       tension: 0
     }),
     low: 0,
-    high: 300000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 150000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
     chartPadding: {
       top: 0,
       right: 0,
@@ -140,6 +142,9 @@ const completedTasksChart = {
     axisY: {
       offset: 70
     },
+    plugins: [
+      Chartist.plugins.tooltip()
+    ]
   },
   animation: {
     draw: function(data) {
