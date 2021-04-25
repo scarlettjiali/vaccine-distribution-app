@@ -22,31 +22,31 @@ import Maps from "views/Maps.js";
 
 const dashboardRoutes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "nc-icon nc-chart-pie-35",
-    component: Dashboard,
-    layout: "/admin",
-  },
-  {
     path: "/user",
-    name: "User Profile",
-    icon: "nc-icon nc-circle-09",
+    name: "Meet Authors",
+    icon: "nc-icon nc-badge",
     component: UserProfile,
     layout: "/admin",
   },
   {
-    path: "/typography",
-    name: "Typography",
-    icon: "nc-icon nc-paper-2",
-    component: Typography,
+    path: "/dashboard",
+    name: "Covid Dashboard",
+    icon: "nc-icon nc-grid-45",
+    component: Dashboard,
     layout: "/admin",
   },
   {
     path: "/maps",
-    name: "Maps",
-    icon: "nc-icon nc-pin-3",
+    name: "Covid Maps",
+    icon: "nc-icon nc-map-big",
     component: Maps,
+    layout: "/admin",
+  },
+  {
+    path: "/typography",
+    name: "Prediction Analysis",
+    icon: "nc-icon nc-single-copy-04",
+    component: Typography,
     layout: "/admin",
   },
 ];
