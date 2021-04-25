@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">VaccineFinderApp</string>
-    <string name="title_covid_dashboard">Covid 19 Dashboard</string>
-    <string name="title_vaccine_map">Vaccine Map</string>
-    <string name="title_notifications">Notifications</string>
-</resources>

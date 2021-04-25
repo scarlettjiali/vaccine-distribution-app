@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, memo } from 'react';
 import { geoCentroid } from 'd3-geo';
 import { scaleQuantize } from "d3-scale";
 import {
@@ -66,7 +66,6 @@ const MapChart = (props) => {
             
             stateData = props.data?.data.find((e) => e.state === cur.id)
       
-            const name = stateData.state;
             props.setTooltipContent({
                name: cur.name,
                cases:stateData.actuals.cases,

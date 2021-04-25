@@ -3,20 +3,12 @@ import React, {useEffect, useState} from "react";
 import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
-import Store from "@material-ui/icons/Store";
 import Warning from "@material-ui/icons/Warning";
 import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -27,8 +19,7 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Death from "./Death.js";
-import { bugs, website, server } from "variables/general.js";
-
+// eslint-disable-next-line no-unused-vars
 import * as ChartistTooltips from 'chartist-plugin-tooltips';
 
 import {
@@ -181,6 +172,7 @@ export default function Dashboard() {
     }).finally(() => {
       setLoading(false)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {

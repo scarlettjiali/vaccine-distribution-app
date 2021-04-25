@@ -1,15 +1,8 @@
 import React from 'react';
-import { useState, useEffect, Suspense } from 'react';
-import ReactTooltip from 'react-tooltip';
-import MapChart from './MapChart';
 import '../App.css';
-import LocationCard from "./LocationCard";
-
-
-
 
 function Mytooltip({content,type}){
-    if(type=="Appointments"){
+    if(type==="Appointments"){
         return <>
     <h3><b>{content.name}</b></h3>
     <p className="elect-total">{content.provider_count} available providers count</p>
@@ -20,7 +13,7 @@ function Mytooltip({content,type}){
     })}
     </>
 
-    }else if( type=="Cases"){
+    }else if( type==="Cases"){
         return <>
                         <h3><b>{content.name}</b></h3>
                         <p className="elect-total">total cases: <b>{content.cases}</b></p>
@@ -29,7 +22,7 @@ function Mytooltip({content,type}){
                         <p className="elect-total">new Deaths: <b>{content.newDeaths}</b></p>
                         <p className="elect-total">riskLevel: <b>{content.riskLevels}</b></p>
                     </>
-    }else if( type=="Vactinnations"){
+    }else if( type==="Vactinnations"){
         return <>
     
                         <h3><b>{content.name}</b></h3>

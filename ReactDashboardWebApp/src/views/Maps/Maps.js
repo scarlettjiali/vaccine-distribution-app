@@ -1,9 +1,7 @@
 import React from 'react';
-import { useState, useEffect, Suspense } from 'react';
-import ReactTooltip from 'react-tooltip';
-import MapChart from './MapChart';
+import { useState } from 'react';
 import '../App.css';
-import LocationCard from "./LocationCard";
+
 import Appointment from "./Appointment";
 // import Select from '../components/Select';
 

@@ -5,7 +5,6 @@ import MapChart from './MapChart';
 import '../App.css';
 import LocationCard from "./LocationCard";
 import Mytooltip from "./Mytooltip"
-import ReactSimpleOptionsSelector from "react-simple-options-selector"
 
 function Appointment({type}) {
     
@@ -14,7 +13,7 @@ function Appointment({type}) {
     const [state, setUSState] = useState(null);
     const [vender, setVender] = useState(null);
     var api=""
-    if (type=='Appointments'){
+    if (type==='Appointments'){
         api="https://www.vaccinespotter.org/api/v0/states.json"
     }
     if (type==='Cases' || type==='Vactinnations'){
@@ -40,7 +39,7 @@ function Appointment({type}) {
                 
             }
                 );
-    }, [type]);
+    }, [type, api]);
     
 
     return (
