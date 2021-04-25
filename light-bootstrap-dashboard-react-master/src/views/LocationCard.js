@@ -28,23 +28,23 @@ const Header = ({ vender }) => {
         <div>
             {storeRows.map((stores, idx) => (
                 <div className="row" key={idx}>
-                    {stores.map(s => 
+                    {stores.map(s =>
                     // { console.log("sto---",s)
                     <div key={s.properties.address} className="column">
-                        <div className="card">
+                        <div className="vaccineMap">
                                 <b>{s.properties.name}</b>
                                 {s.properties.address},
-                                {s.properties.city} 
+                                {s.properties.city}
                                 {s.properties.state}
                                 <br /><button type="button" onClick={() => onOpen(s)}>Info</button>
-                        </div>                       
+                        </div>
                     </div>
                 )}
                 </div>)
             )}
-            <Modal 
-                isOpen={isOpen} 
-                ariaHideApp={false} 
+            <Modal
+                isOpen={isOpen}
+                ariaHideApp={false}
                 className="mymodal">
                 <h4><b>Available Vaccine</b></h4>
                 <h6><b>Appointment Available:</b> {convertBoolean(listOfAppointments.properties?.appointments_available)}</h6>
