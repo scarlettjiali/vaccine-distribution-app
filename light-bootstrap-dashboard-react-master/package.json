@@ -15,7 +15,13 @@
     "react-notification-alert": "0.0.13",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.1"
+    "react-scripts": "4.0.1",
+    "d3-geo-projection": "^3.0.0",
+    "d3-scale": "^3.2.4",
+    "react-simple-options-selector": "1.0.3",
+    "react-modal": "^3.12.1",
+    "react-simple-maps": "^2.3.0",
+    "react-tooltip": "^4.2.10"
   },
   "optionalDependencies": {
     "jquery": "3.5.1",
