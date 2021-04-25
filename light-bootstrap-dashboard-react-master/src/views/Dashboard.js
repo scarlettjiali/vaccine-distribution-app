@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from 'react';
 import ChartistGraph from "react-chartist";
 // react-bootstrap components
 import {
@@ -16,37 +17,159 @@ import {
   Tooltip,
 } from "react-bootstrap";
 
+// eslint-disable-next-line no-unused-vars
+import * as ChartistTooltips from 'chartist-plugin-tooltips';
+
+const totalUSPopulation = 332410303
+const vaccineUrl = 'https://cdc-vaccination-history.datasette.io/cdc.json?sql=select%20Date%2C%20Location%2C%20ShortName%2C%20LongName%2C%20Census2019%2C%20Doses_Distributed%2C%20Doses_Administered%20from%20daily_reports%20where%20Location%20%3D%20%27US%27'
+
+import {
+  vaccineChart,
+  emailsSubscriptionChart,
+  completedTasksChart
+} from "variables/charts";
+
 function Dashboard() {
+
+  const [loading, setLoading] = useState(true);
+  const [positiveData, setPositiveData] = useState(null);
+  const [hospitalData, setHospitalData] = useState(null);
+  const [vaccineData, setVaccineData] = useState(null);
+  const [pieData, setPieData] = useState(null);
+  const [percent, setPercent] = useState(0);
+  const [increase, setIncrease] = useState(0);
+  const [dailyIncrease, setDailyIncrease] = useState(null);
+
+  const allMonths = ["20 Apr", "20 May", "20 Jun", "20 Jul", "20 Aug", "20 Sep", "20 Oct", "20 Nov", "20 Dec", "21 Jan", "21 Feb", "21 Mar"]
+  const addZ = (n) => { return n < 10 ? '0' + n : '' + n; }
+  const addZMonth = (n) => ("0" + (n.getMonth() + 1)).slice(-2)
+//
+  function makeCalls() {
+    const months = Array.from({length: 12}, (_, i) => {
+      const current = new Date()
+      current.setMonth(current.getMonth() - i - 1)
+      const formattedDate = `${current.getFullYear()}${addZMonth(current)}${addZ(1)}`
+      return fetch(`https://api.covidtracking.com/v1/us/${formattedDate}.json`)
+    })
+    return Promise.all(months)
+        .then(responses => Promise.all(responses.map(url => url.json())))
+        .then(data => data)
+  }
+
+  function makeVaccineCalls() {
+    return fetch(vaccineUrl)
+        .then(responses => responses.json())
+        .then(data => data)
+        .catch((err) => console.log(err))
+  }
+
+
+  function makeDailyCall() {
+    return fetch(`https://api.covidtracking.com/v1/us/current.json`)
+        .then(responses => responses.json())
+        .then(data => data)
+        .catch((err) => console.log(err))
+  }
+  useEffect(() => {
+
+    makeDailyCall()
+        .then((resp) => {
+          setDailyIncrease(resp[0])
+        })
+    // 0: "Date"
+    // 1: "Location"
+    // 2: "ShortName"
+    // 3: "LongName"
+    // 4: "Census2019"
+    // 5: "Doses_Distributed"
+    // 6: "Doses_Administered"
+    // vaccine data
+    makeVaccineCalls()
+        .then((resp) => {
+          const date = resp.rows.map(e => e[0])
+          const vaccineDistributed = resp.rows.map(e => e[5])
+          const vaccineAdministered = resp.rows.map(e => e[6])
+          const adminLabel = vaccineAdministered.map(e => {
+            return {
+              "meta" : "Vaccine Administered",
+              "value" : e
+            }
+          })
+          const distributedLabel = vaccineDistributed.map(e => {
+            return {
+              "meta" : "Vaccine Distributed",
+              "value" : e
+            }
+          })
+          const currentUSVaccine = {
+            labels: date.slice(30, date.length),
+            series: [adminLabel.slice(30, date.length), distributedLabel.slice(30, date.length)]
+          }
+          const snapshotOfPeopleVaccinated = vaccineAdministered.slice(-1)[0]
+          const snapshotIncreaseArr = vaccineAdministered.slice(Math.max(vaccineAdministered.length - 2, 1))
+          setPieData({
+            series: [totalUSPopulation, snapshotOfPeopleVaccinated]
+          })
+          setPercent((snapshotOfPeopleVaccinated * 1.0 / totalUSPopulation).toFixed(3) * 100);
+          setIncrease((snapshotIncreaseArr[1] - snapshotIncreaseArr[0]))
+          setVaccineData(currentUSVaccine)
+        })
+
+
+
+    makeCalls().then((resp) => {
+      const hospitalCurrently = resp.map(e => {
+        return {
+          "meta" : "Hospitalized",
+          "value" : e.hospitalizedCurrently
+        }
+      }).reverse()
+      const icuCurrently = resp.map(e => {
+        return {
+          "meta" : "ICU Population",
+          "value" : e.inIcuCurrently
+        }
+      }).reverse()
+
+      const ventilatorCurrently = resp.map(e => {
+        return {
+          "meta" : "Ventilator Population",
+          "value" : e.onVentilatorCurrently
+        }
+      }).reverse()
+
+      const positiveCurrently = resp.map(e => {
+        return {
+          "meta" : "Total Positive Case",
+          "value" : e.positive
+        }
+      }).reverse()
+
+      const negativeCurrently = resp.map(e => {
+        return {
+          "meta" : "Total Negative Case",
+          "value" : e.negative
+        }
+      }).reverse()
+
+      const positive = {
+        labels: allMonths,
+        series: [positiveCurrently, negativeCurrently]
+      }
+      const hospitalize = {
+        labels: allMonths,
+        series: [hospitalCurrently, icuCurrently, ventilatorCurrently]
+      }
+      setPositiveData(positive)
+      setHospitalData(hospitalize)
+    }).finally(() => {
+      setLoading(false)
+    })
+  }, [])
   return (
     <>
       <Container fluid>
         <Row>
-          <Col lg="3" sm="6">
-            <Card className="card-stats">
-              <Card.Body>
-                <Row>
-                  <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-chart text-warning"></i>
-                    </div>
-                  </Col>
-                  <Col xs="7">
-                    <div className="numbers">
-                      <p className="card-category">Number</p>
-                      <Card.Title as="h4">150GB</Card.Title>
-                    </div>
-                  </Col>
-                </Row>
-              </Card.Body>
-              <Card.Footer>
-                <hr></hr>
-                <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
-                  Update Now
-                </div>
-              </Card.Footer>
-            </Card>
-          </Col>
           <Col lg="3" sm="6">
             <Card className="card-stats">
               <Card.Body>
@@ -127,7 +250,7 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
-          <Col md="8">
+          <Col md="12">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Users Behavior</Card.Title>
@@ -136,52 +259,12 @@ function Dashboard() {
               <Card.Body>
                 <div className="ct-chart" id="chartHours">
                   <ChartistGraph
-                    data={{
-                      labels: [
-                        "9:00AM",
-                        "12:00AM",
-                        "3:00PM",
-                        "6:00PM",
-                        "9:00PM",
-                        "12:00PM",
-                        "3:00AM",
-                        "6:00AM",
-                      ],
-                      series: [
-                        [287, 385, 490, 492, 554, 586, 698, 695],
-                        [67, 152, 143, 240, 287, 335, 435, 437],
-                        [23, 113, 67, 108, 190, 239, 307, 308],
-                      ],
-                    }}
-                    type="Line"
-                    options={{
-                      low: 0,
-                      high: 800,
-                      showArea: false,
-                      height: "245px",
-                      axisX: {
-                        showGrid: false,
-                      },
-                      lineSmooth: true,
-                      showLine: true,
-                      showPoint: true,
-                      fullWidth: true,
-                      chartPadding: {
-                        right: 50,
-                      },
-                    }}
-                    responsiveOptions={[
-                      [
-                        "screen and (max-width: 640px)",
-                        {
-                          axisX: {
-                            labelInterpolationFnc: function (value) {
-                              return value[0];
-                            },
-                          },
-                        },
-                      ],
-                    ]}
+                      className="ct-chart"
+                      data={vaccineData}
+                      type="Bar"
+                      options={vaccineChart.options}
+                      responsiveOptions={vaccineChart.responsiveOptions}
+                      listener={vaccineChart.animation}
                   />
                 </div>
               </Card.Body>
