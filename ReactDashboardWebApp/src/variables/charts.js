@@ -35,9 +35,7 @@ const dailySalesChart = {
       bottom: 0,
       left: 0
     },
-    plugins: [
-      Chartist.plugins.tooltip()
-    ]
+   
   },
   // for animation
   animation: {
@@ -91,9 +89,6 @@ const emailsSubscriptionChart = {
     axisY: {
       offset: 70
     },
-    plugins: [
-      Chartist.plugins.tooltip()
-    ]
   },
   responsiveOptions: [
     [
@@ -145,9 +140,6 @@ const completedTasksChart = {
     axisY: {
       offset: 70
     },
-    plugins: [
-      Chartist.plugins.tooltip()
-    ]
   },
   animation: {
     draw: function(data) {

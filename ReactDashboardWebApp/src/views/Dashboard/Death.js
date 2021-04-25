@@ -130,8 +130,6 @@ if(content!=null){
 
   return (  
 content!==null && 
-<Card chart>
-<CardHeader color="warning">
 
       <ChartistGraph
         className="ct-chart"
@@ -141,17 +139,7 @@ content!==null &&
         animation={animation}
         
       />
-</CardHeader>
-<CardBody>
-  <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-  <p className={classes.cardCategory}>Last Campaign Performance</p>
-</CardBody>
-<CardFooter chart>
-  <div className={classes.stats}>
-    <AccessTime /> campaign sent 2 days ago
-  </div>
-</CardFooter>
-</Card>
+
     );
 
 }

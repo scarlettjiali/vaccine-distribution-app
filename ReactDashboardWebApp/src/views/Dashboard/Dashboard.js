@@ -142,6 +142,23 @@ export default function Dashboard() {
             </GridItem>
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
+                <CardHeader color="success">
+                  <Death/>
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardTitle}>Monthly COVID Positive Cases and Death line chart</h4>
+                  <p className={classes.cardCategory}>Over the past year, for each month it represent the amount of positive cases</p>
+                </CardBody>
+                <CardFooter chart>
+                  <div className={classes.stats}>
+                    <AccessTime /> Data loaded just now from -  <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            
+            <GridItem xs={12} sm={12} md={12}>
+              <Card chart>
                 <CardHeader color="info">
                   <ChartistGraph
                       className="ct-chart"
