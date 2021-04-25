@@ -23,7 +23,6 @@ function Maps() {
         <div className="container">
             <Suspense fallback={<div>Fetching results...</div>}>
                 <Suspense fallback={<>Loading...</>}>
-                    <h1>Covid 19 Vaccine Tracker</h1>
                 </Suspense>
                 <MapChart setTooltipContent={setContent} setUSState={setUSState} />
             </Suspense>

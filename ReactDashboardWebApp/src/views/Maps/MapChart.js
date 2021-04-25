@@ -11,6 +11,7 @@ import {
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import allStates from '../data/allstates.json';
+import '../App.css';
 
 
 // reference: https://www.react-simple-maps.io/examples/usa-counties-choropleth-quantize/

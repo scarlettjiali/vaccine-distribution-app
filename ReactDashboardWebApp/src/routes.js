@@ -17,9 +17,9 @@
 */
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
-import Person from "@material-ui/icons/Person";
+import People from "@material-ui/icons/People";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import LocationOn from "@material-ui/icons/LocationOn";
+import Schedule from "@material-ui/icons/Schedule";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
@@ -29,22 +29,22 @@ import Maps from "views/Maps/Maps.js";
 const dashboardRoutes = [
   {
     path: "/user",
-    name: "User Profile",
-    icon: Person,
+    name: "Authors Introduction",
+    icon: People,
     component: UserProfile,
     layout: "/admin"
   },
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Covid Dashboard",
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin"
   },
   {
     path: "/maps",
-    name: "Maps",
-    icon: LocationOn,
+    name: "Vaccination Appointment",
+    icon: Schedule,
     component: Maps,
     layout: "/admin"
   },
