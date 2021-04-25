@@ -260,7 +260,7 @@ export default function Dashboard() {
                   <ChartistGraph
                       className="ct-chart"
                       data={vaccineData}
-                      type="Line"
+                      type="Bar"
                       options={vaccineChart.options}
                       responsiveOptions={vaccineChart.responsiveOptions}
                       listener={vaccineChart.animation}

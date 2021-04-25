@@ -129,7 +129,7 @@ const vaccineChart = {
       showGrid: true
     },
     low: 0,
-    high: 280000000,
+    high: 500000000,
     chartPadding: {
       top: 0,
       right: 3,
@@ -139,6 +139,7 @@ const vaccineChart = {
     axisY: {
       offset: 70
     },
+    stackBars: true,
     plugins: [
       Chartist.plugins.tooltip()
     ]
