@@ -4,48 +4,40 @@ import ReactTooltip from 'react-tooltip';
 import MapChart from './MapChart';
 import '../App.css';
 import LocationCard from "./LocationCard";
+import Appointment from "./Appointment";
+// import Select from '../components/Select';
 
-
+import ReactSimpleOptionsSelector from "react-simple-options-selector"
 function Maps() {
-    const [content, setContent] = useState(null);
-    const [state, setUSState] = useState(null);
-    const [vender, setVender] = useState(null);
-
+    const options=[{
+        id: 'Appointments', 
+        label: 'Appointments',
+        selected: true,
+    },
+    {
+        id: 'Vactinnations', 
+        label: 'Vactinnations',
+        selected: false,
+    },
+    {
+        id: 'Cases',
+        label: 'Cases',
+        selected: false,
+    }
+]
+    const [type, setType] = useState("Appointments");
     
 
-    useEffect(() => {
-        fetch(`https://www.vaccinespotter.org/api/v0/states/${state}.json`)
-            .then(response => response.json())
-            .then(data => setVender({data}));
-    }, [state]);
-    console.log(vender,state)
-    return (
-        <div className="container">
-            <Suspense fallback={<div>Fetching results...</div>}>
-                <Suspense fallback={<>Loading...</>}>
-                </Suspense>
-                <MapChart setTooltipContent={setContent} setUSState={setUSState} />
-            </Suspense>
-            <ReactTooltip
-                className="tooltip"
-                textColor="black"
-                backgroundColor="white"
-            >
-                {content && (
-                    <>
-                        <h3>{content.name}</h3>
-                        <p className="elect-total">{content.provider_count} available providers count</p>
-                        <p className="elect-total">{content.total_provider_count} available stores count</p>
-                        <p className="elect-total">Available detailed information</p>
-                        {content.provider_brands.map((brand, i) => {
-                            return <li key={brand.id}><b>{brand.name}</b> store count: {brand.location_count}</li>;
-                        })}
-                    </>
-                )}
-            </ReactTooltip>
-            {vender && <LocationCard vender={vender} />}
-        </div>
-    );
+    return <>
+<ReactSimpleOptionsSelector 
+    selected_text_color="#ffffff"
+	selected_border_color="#f1f1f1"
+	selected_background_color="#8A0078"
+    options={options} onSelectionChange={(name, selected)=>{
+    setType(selected[0])
+    
+} }/>
+    <Appointment type={type}/></>
 }
 
 export default Maps;

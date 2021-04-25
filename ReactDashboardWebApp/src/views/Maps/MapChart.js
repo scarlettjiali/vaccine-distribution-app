@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState, memo } from 'react';
 import { geoCentroid } from 'd3-geo';
 import { scaleQuantize } from "d3-scale";
@@ -11,11 +10,11 @@ import {
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import allStates from '../data/allstates.json';
-import '../App.css';
-
+import React from 'react';
 
 // reference: https://www.react-simple-maps.io/examples/usa-counties-choropleth-quantize/
 // reference: https://www.react-simple-maps.io/examples/usa-with-state-labels/
+
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 
 const offsets = {
@@ -44,46 +43,112 @@ const colorScale = scaleQuantize()
         "#000070"
     ]);
 
-const MapChart = ({ setTooltipContent, setUSState }) => {
-    const [vaccineData, setVaccineData] = useState(null);
-    useEffect(() => {
-        fetch('https://www.vaccinespotter.org/api/v0/states.json')
-            .then(response => response.json())
-            .then(data => setVaccineData({data}));
-    }, [])
-
+const MapChart = (props) => {
     useEffect(() => {
         ReactTooltip.rebuild();
     }, []);
-
     const handleMouseEnter = (geoId, name) => {
         const cur = allStates.find((s) => s.val === geoId);
-        const stateData = vaccineData.data.find((e) => e.code === cur.id)
-        setTooltipContent({
-            name: stateData.name,
-            provider_count: stateData.provider_brand_count,
-            total_provider_count: stateData.store_count,
-            provider_brands: stateData.provider_brands
-        });
+        let stateData;
+        
+        if(props.type==="Appointments" && props.data!==null){
+            stateData = props.data.data.find((e) => e.code === cur.id)
+            props.setTooltipContent({
+                name: stateData.name,
+                provider_count: stateData.provider_brand_count,
+                total_provider_count: stateData.store_count,
+                provider_brands: stateData.provider_brands
+            });
+           
+          
+            
+        }else if (props.type==="Cases" && props.data!==null){   
+            
+            stateData = props.data?.data.find((e) => e.state === cur.id)
+      
+            const name = stateData.state;
+            props.setTooltipContent({
+               name: cur.name,
+               cases:stateData.actuals.cases,
+               deaths:stateData.actuals.deaths,
+               newCases:stateData.actuals.newCases,
+               newDeaths:stateData.actuals.newDeaths,
+               riskLevels:stateData.riskLevels.overall
+            });
+           
+        }
+        else if (props.type==="Vactinnations" && props.data!==null){
+            stateData = props.data?.data.find((e) => e.state === cur.id)
+            console.log("vacineation==---",stateData)
+            props.setTooltipContent({
+                name: cur.name,
+                vaccinationsCompleted:stateData.actuals.vaccinationsCompleted,
+                vaccinationsInitiated:stateData.actuals.vaccinationsInitiated,
+                vaccinesAdministered:stateData.actuals.vaccinesAdministered,
+                vaccinesDistributed:stateData.actuals.vaccinesDistributed,
+            });
+           
+           
+
+        }
         ReactTooltip.rebuild();
     };
 
     const handleClick = (geoId) => {
         const cur = allStates.find((s) => s.val === geoId);
-        setUSState(cur.id)
+        props.setUSState(cur.id)
     }
+    console.log("last type====",props)
+    console.log("scar;lllll====",props.data)
 
-    return (
-        <ComposableMap data-tip="" projection="geoAlbersUsa">
+    return (props.data &&<ComposableMap data-tip="" projection="geoAlbersUsa">
             <Geographies geography={geoUrl}>
                 {({ geographies }) => (
                     <>
                         {geographies.map((geo) => {
                             
                             const centroid = geoCentroid(geo);
-                            console.log("___++",centroid)
+                            let mapData;
                             const cur = allStates.find((s) => s.val === geo.id);
-                            const stateData = vaccineData?.data.find((e) => e.code === cur.id)
+                            let scale=1000;
+                            if(props.type==="Appointments"){
+                                const stateData = props.data?.data.find((e) => e.code === cur.id)
+                                mapData=stateData?.store_count
+                                if(props.data!= null){
+                                    scale=Math.max.apply(Math, props.data.data.map(function(o) { return o.store_count; }))
+                                }
+                                mapData=stateData?.store_count/scale*1000
+                                
+                            }else if (props.type==="Cases"){   
+                                const stateData = props.data?.data.find((e) => e.state === cur.id)
+                                mapData=stateData?.actuals.cases
+                                scale=10000;      
+                                if(props.data!= null && mapData!==undefined){
+                                    scale=Math.max.apply(Math, props.data.data.map(function(o) { return o.actuals.cases??0; }))    
+                                                      
+                                }
+                                mapData=stateData?.actuals.cases/scale*1000
+                            }else if (props.type==="Vactinnations"){
+                                const stateData = props.data?.data.find((e) => e.state === cur.id)
+                                mapData=stateData?.actuals.vaccinationsCompleted
+                                scale=10000;   
+                                if(props.data!==null && mapData!==undefined){
+                                    scale=Math.max.apply(Math, props.data.data.map(function(o) { 
+                                        return o.actuals.vaccinationsCompleted; 
+                                    }))                          
+                                }
+                                mapData=stateData?.actuals.vaccinationsCompleted/scale*1000
+
+                            }else{
+                                const stateData = props.data?.data.find((e) => e.code === cur.id)
+                                mapData=stateData?.store_count
+                                if(props.data!= null){
+                                    scale=Math.max.apply(Math, props.data.data.map(function(o) { return o.store_count; }))
+                                }
+                                mapData=stateData?.store_count/scale*1000
+                            }
+                            
+                     
                             return (
                                 <>
                                     <Geography
@@ -93,7 +158,7 @@ const MapChart = ({ setTooltipContent, setUSState }) => {
                                         fill="#DDD"
                                         style={{
                                             default: {
-                                                fill: colorScale(stateData?.store_count || 0),
+                                                fill: colorScale(mapData|| 0),
                                                 outline: 'none',
                                             },
                                             hover: {
@@ -103,7 +168,7 @@ const MapChart = ({ setTooltipContent, setUSState }) => {
                                         }}
                                         onMouseEnter={() => handleMouseEnter(geo.id, geo.properties.name)}
                                         onClick={() => handleClick(geo.id)}
-                                        onMouseLeave={() => setTooltipContent(null)}
+                                        onMouseLeave={() => props.setTooltipContent(null)}
                                     />
                                     <g key={geo.rsmKey + '-name'}>
                                         {cur &&
