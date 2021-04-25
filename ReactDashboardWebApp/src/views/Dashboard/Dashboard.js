@@ -49,6 +49,8 @@ export default function Dashboard() {
   const [positiveData, setPositiveData] = useState(null);
   const [hospitalData, setHospitalData] = useState(null);
 
+  console.log(positiveData)
+
   const allMonths = ["20 Apr", "20 May", "20 Jun", "20 Jul", "20 Aug", "20 Sep", "20 Oct", "20 Nov", "20 Dec", "21 Jan", "21 Feb", "21 Mar"]
   const addZ = (n) => { return n < 10 ? '0' + n : '' + n; }
   const addZMonth = (n) => ("0" + (n.getMonth() + 1)).slice(-2)
@@ -67,26 +69,43 @@ export default function Dashboard() {
 
   useEffect(() => {
     makeCalls().then((resp) => {
+      const hospitalCurrently = resp.map(e => {
+        return {
+          "meta" : "Hospitalized",
+          "value" : e.hospitalizedCurrently
+        }
+      }).reverse()
+      const icuCurrently = resp.map(e => {
+        return {
+          "meta" : "ICU Population",
+          "value" : e.inIcuCurrently
+        }
+      }).reverse()
+
+      const positiveCurrently = resp.map(e => {
+        return {
+          "meta" : "Total Positive Case",
+          "value" : e.positive
+        }
+      }).reverse()
+
+      const deathCurrently = resp.map(e => {
+        return {
+          "meta" : "Total Death Case",
+          "value" : e.death
+        }
+      }).reverse()
+
       const positive = {
         labels: allMonths,
-        series: [resp.map(e => e.positive), resp.map(e => e.death)]
+        series: [positiveCurrently, deathCurrently]
       }
       const hospitalize = {
         labels: allMonths,
-        series: [resp.map(e => {
-          return {
-            "meta" : "e.positive",
-            "value" : e.hospitalizedCurrently
-          }
-        }),
-          resp.map(e => {
-            return {
-              "meta" : "e.positive",
-              "value" : e.inIcuCurrently
-            }
-          })
-        ]
+        series: [hospitalCurrently, icuCurrently]
       }
+
+      console.log(hospitalize)
       setPositiveData(positive)
       setHospitalData(hospitalize)
     }).finally(() => {
@@ -143,71 +162,6 @@ export default function Dashboard() {
                     <AccessTime /> Data loaded just now from -  <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
                   </div>
                 </CardFooter>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
-              <CustomTabs
-                  title="Tasks:"
-                  headerColor="primary"
-                  tabs={[
-                    {
-                      tabName: "Bugs",
-                      tabIcon: BugReport,
-                      tabContent: (
-                          <Tasks
-                              checkedIndexes={[0, 3]}
-                              tasksIndexes={[0, 1, 2, 3]}
-                              tasks={bugs}
-                          />
-                      )
-                    },
-                    {
-                      tabName: "Website",
-                      tabIcon: Code,
-                      tabContent: (
-                          <Tasks
-                              checkedIndexes={[0]}
-                              tasksIndexes={[0, 1]}
-                              tasks={website}
-                          />
-                      )
-                    },
-                    {
-                      tabName: "Server",
-                      tabIcon: Cloud,
-                      tabContent: (
-                          <Tasks
-                              checkedIndexes={[1]}
-                              tasksIndexes={[0, 1, 2]}
-                              tasks={server}
-                          />
-                      )
-                    }
-                  ]}
-              />
-            </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-              <Card>
-                <CardHeader color="warning">
-                  <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
-                  <p className={classes.cardCategoryWhite}>
-                    New employees on 15th September, 2016
-                  </p>
-                </CardHeader>
-                <CardBody>
-                  <Table
-                      tableHeaderColor="warning"
-                      tableHead={["ID", "Name", "Salary", "Country"]}
-                      tableData={[
-                        ["1", "Dakota Rice", "$36,738", "Niger"],
-                        ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                        ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                        ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                      ]}
-                  />
-                </CardBody>
               </Card>
             </GridItem>
           </GridContainer>
