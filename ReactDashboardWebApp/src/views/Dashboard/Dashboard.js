@@ -272,14 +272,14 @@ export default function Dashboard() {
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
                 <CardHeader color="primary">
-                  <ChartistGraph
+                {positiveData && <ChartistGraph
                       className="ct-chart"
                       data={positiveData}
                       type="Bar"
                       options={emailsSubscriptionChart.options}
                       responsiveOptions={emailsSubscriptionChart.responsiveOptions}
                       listener={emailsSubscriptionChart.animation}
-                  />
+                  />}
                 </CardHeader>
                 <CardBody>
                   <h4 className={classes.cardTitle}>Monthly COVID Positive/Negative Cases</h4>
