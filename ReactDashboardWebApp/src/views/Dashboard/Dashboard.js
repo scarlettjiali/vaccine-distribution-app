@@ -7,11 +7,12 @@ import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
 import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
+import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
+import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
@@ -19,9 +20,6 @@ import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -34,6 +32,7 @@ import { bugs, website, server } from "variables/general.js";
 import * as ChartistTooltips from 'chartist-plugin-tooltips';
 
 import {
+  vaccineChart,
   emailsSubscriptionChart,
   completedTasksChart
 } from "variables/charts.js";
@@ -42,12 +41,20 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 
 const useStyles = makeStyles(styles);
 
+const totalUSPopulation = 332410303
+
+const vaccineUrl = 'https://cdc-vaccination-history.datasette.io/cdc.json?sql=select%20Date%2C%20Location%2C%20ShortName%2C%20LongName%2C%20Census2019%2C%20Doses_Distributed%2C%20Doses_Administered%20from%20daily_reports%20where%20Location%20%3D%20%27US%27'
+
 export default function Dashboard() {
   const classes = useStyles();
-
   const [loading, setLoading] = useState(true);
   const [positiveData, setPositiveData] = useState(null);
   const [hospitalData, setHospitalData] = useState(null);
+  const [vaccineData, setVaccineData] = useState(null);
+  const [pieData, setPieData] = useState(null);
+  const [percent, setPercent] = useState(0);
+  const [increase, setIncrease] = useState(0);
+  const [dailyIncrease, setDailyIncrease] = useState(null);
 
   const allMonths = ["20 Apr", "20 May", "20 Jun", "20 Jul", "20 Aug", "20 Sep", "20 Oct", "20 Nov", "20 Dec", "21 Jan", "21 Feb", "21 Mar"]
   const addZ = (n) => { return n < 10 ? '0' + n : '' + n; }
@@ -65,7 +72,67 @@ export default function Dashboard() {
         .then(data => data)
   }
 
+  function makeVaccineCalls() {
+    return fetch(vaccineUrl)
+        .then(responses => responses.json())
+        .then(data => data)
+        .catch((err) => console.log(err))
+  }
+
+
+  function makeDailyCall() {
+    return fetch(`https://api.covidtracking.com/v1/us/current.json`)
+        .then(responses => responses.json())
+        .then(data => data)
+        .catch((err) => console.log(err))
+  }
   useEffect(() => {
+
+    makeDailyCall()
+        .then((resp) => {
+          setDailyIncrease(resp[0])
+        })
+    // 0: "Date"
+    // 1: "Location"
+    // 2: "ShortName"
+    // 3: "LongName"
+    // 4: "Census2019"
+    // 5: "Doses_Distributed"
+    // 6: "Doses_Administered"
+    // vaccine data
+    makeVaccineCalls()
+        .then((resp) => {
+          const date = resp.rows.map(e => e[0])
+          const vaccineDistributed = resp.rows.map(e => e[5])
+          const vaccineAdministered = resp.rows.map(e => e[6])
+          const adminLabel = vaccineAdministered.map(e => {
+            return {
+              "meta" : "Vaccine Administered",
+              "value" : e
+            }
+          })
+          const distributedLabel = vaccineDistributed.map(e => {
+            return {
+              "meta" : "Vaccine Distributed",
+              "value" : e
+            }
+          })
+          const currentUSVaccine = {
+            labels: date.slice(30, date.length),
+            series: [adminLabel.slice(30, date.length), distributedLabel.slice(30, date.length)]
+          }
+          const snapshotOfPeopleVaccinated = vaccineAdministered.slice(-1)[0]
+          const snapshotIncreaseArr = vaccineAdministered.slice(Math.max(vaccineAdministered.length - 2, 1))
+          setPieData({
+            series: [totalUSPopulation, snapshotOfPeopleVaccinated]
+          })
+          setPercent((snapshotOfPeopleVaccinated * 1.0 / totalUSPopulation).toFixed(3) * 100);
+          setIncrease((snapshotIncreaseArr[1] - snapshotIncreaseArr[0]))
+          setVaccineData(currentUSVaccine)
+        })
+
+
+
     makeCalls().then((resp) => {
       const hospitalCurrently = resp.map(e => {
         return {
@@ -122,6 +189,94 @@ export default function Dashboard() {
     return (
         <div>
           <GridContainer>
+            <GridItem xs={8} sm={3} md={6}>
+              <Card>
+                <CardHeader color="warning" stats icon>
+                  <CardIcon color="warning">
+                    <ChartistGraph
+                        className="ct-chart"
+                        data={pieData}
+                        type="Pie"
+                    />
+                  </CardIcon>
+                  <p className={classes.cardCategory}>Covid 19 Total Vaccine Population</p>
+                  <h3 className={classes.cardTitle}>
+                    {percent} <small>%</small>
+                  </h3>
+                </CardHeader>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <Danger>
+                      <Warning />
+                    </Danger>
+                    <a href="#pablo" onClick={e => e.preventDefault()}>
+                      Data just loaded from CDC.
+                    </a>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem xs={8} sm={3} md={3}>
+              <Card>
+                <CardHeader color="rose" stats icon>
+                  <CardIcon color="rose">
+                    <NewReleasesIcon />
+                  </CardIcon>
+                  <p className={classes.cardCategory}>Daily Positive Case Increase</p>
+                  <h3 className={classes.cardTitle}>{dailyIncrease.positiveIncrease}</h3>
+                  <p className={classes.cardCategory}>Daily Death Case Increase</p>
+                  <h3 className={classes.cardTitle}>{dailyIncrease.deathIncrease}</h3>
+                </CardHeader>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <LocalOffer />
+                    Tracked from API <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem xs={8} sm={3} md={3}>
+              <Card>
+                <CardHeader color="danger" stats icon>
+                  <CardIcon color="danger">
+                    <LocalPharmacyIcon />
+                  </CardIcon>
+                  <p className={classes.cardCategory}>Daily Increase for COVID Vaccinated Population</p>
+                  <h3 className={classes.cardTitle}>+{increase}</h3>
+                </CardHeader>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <Update />
+                    Just Updated
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <Card chart>
+                <CardHeader color="info">
+                  <ChartistGraph
+                      className="ct-chart"
+                      data={vaccineData}
+                      type="Line"
+                      options={vaccineChart.options}
+                      responsiveOptions={vaccineChart.responsiveOptions}
+                      listener={vaccineChart.animation}
+                  />
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardTitle}>Daily US Vaccine Population</h4>
+                  <p className={classes.cardCategory}>The amount of vaccinate people in US. Hover on the lines and you'll see actual number</p>
+                </CardBody>
+                <CardFooter chart>
+                  <div className={classes.stats}>
+                    <AccessTime /> Data loaded just now from -  <a href='https://covidtracking.com/data/api'>https://covidtracking.com/data/api</a>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
             <GridItem xs={12} sm={12} md={12}>
               <Card chart>
                 <CardHeader color="primary">
