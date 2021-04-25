@@ -29,8 +29,8 @@ const Header = ({ vender }) => {
             {storeRows.map((stores, idx) => (
                 <div className="row" key={idx}>
                     {stores.map(s => 
-                    { console.log("sto---",s)
-                    return <div key={s.properties.address} className="column">
+                    // { console.log("sto---",s)
+                    <div key={s.properties.address} className="column">
                         <div className="card">
                                 <b>{s.properties.name}</b>
                                 {s.properties.address},
@@ -38,7 +38,7 @@ const Header = ({ vender }) => {
                                 {s.properties.state}
                                 <br /><button type="button" onClick={() => onOpen(s)}>Info</button>
                         </div>                       
-                    </div>}
+                    </div>
                 )}
                 </div>)
             )}

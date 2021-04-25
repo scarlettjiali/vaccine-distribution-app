@@ -148,8 +148,7 @@ const MapChart = (props) => {
                             }
                             
                      
-                            return (
-                                <>
+                            return <g key={geo.rsmKey + '+name'}>
                                     <Geography
                                         key={geo.rsmKey}
                                         stroke="#FFF"
@@ -194,8 +193,8 @@ const MapChart = (props) => {
                                             </Annotation>
                                         ))}
                                     </g>
-                                </>
-                            );
+                                </g>
+                            
                         })}
                     </>
                 )}

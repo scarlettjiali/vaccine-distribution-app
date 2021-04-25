@@ -27,7 +27,9 @@ function Maps() {
     
 
     return <>
-<ReactSimpleOptionsSelector 
+   
+
+    <ReactSimpleOptionsSelector 
     selected_text_color="#ffffff"
 	selected_border_color="#f1f1f1"
 	selected_background_color="#8A0078"

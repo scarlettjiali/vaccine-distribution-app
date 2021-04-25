@@ -111,7 +111,7 @@ if(content!=null){
 
 
   return (  
-content!==null && 
+data!==null && 
 
       <ChartistGraph
         className="ct-chart"

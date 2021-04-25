@@ -8,9 +8,9 @@ import Mytooltip from "./Mytooltip"
 
 function Appointment({type}) {
     
-    console.log("----app",type)
+    // console.log("----app",type)
     const [content, setContent] = useState(null);
-    const [state, setUSState] = useState(null);
+    const [state, setUSState] = useState("NY");
     const [vender, setVender] = useState(null);
     var api=""
     if (type==='Appointments'){
@@ -31,7 +31,7 @@ function Appointment({type}) {
     const [vaccineData, setVaccineData] = useState(null);
     
     useEffect(() => {
-        console.log(api)
+       
         fetch(api)
             .then(response => response.json())
             .then(data => {
@@ -44,9 +44,7 @@ function Appointment({type}) {
 
     return (
         <div className="container">
-           
             <Suspense fallback={<div>Fetching results...</div>}>
-
                 <MapChart setTooltipContent={setContent} setUSState={setUSState} data={vaccineData} type={type}/>
             </Suspense>
             <ReactTooltip
