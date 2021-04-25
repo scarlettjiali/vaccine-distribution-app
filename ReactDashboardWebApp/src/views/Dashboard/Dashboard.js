@@ -185,11 +185,11 @@ export default function Dashboard() {
               <Card>
                 <CardHeader color="warning" stats icon>
                   <CardIcon color="warning">
-                    <ChartistGraph
+                  {pieData && <ChartistGraph
                         className="ct-chart"
                         data={pieData}
                         type="Pie"
-                    />
+                    />}
                   </CardIcon>
                   <p className={classes.cardCategory}>Covid 19 Total Vaccine Population</p>
                   <h3 className={classes.cardTitle}>
