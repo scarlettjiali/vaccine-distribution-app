@@ -31,43 +31,25 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg").default}
+                      src={require("assets/img/sean.jpeg").default}
                     ></img>
-                    <h5 className="title">Mike Andrew</h5>
+                    <h5 className="title">Sean Dudley</h5>
                   </a>
-                  <p className="description">michael24</p>
+                  <p className="description">sdudley6</p>
                 </div>
                 <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
+                Engineer | Python | Machine Learning | Robotics| Data Science| PyTorch | Scikit-learn | Spark | NumPy | Pandas
                 </p>
               </Card.Body>
               <hr></hr>
               <div className="button-container mr-auto ml-auto">
                 <Button
                   className="btn-simple btn-icon"
-                  href="#pablo"
+                  href="https://www.linkedin.com/in/sean-dudley-844310188/"
                   onClick={(e) => e.preventDefault()}
                   variant="link"
                 >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
+                  <i className="fab fa-linkedin"></i>
                 </Button>
               </div>
             </Card>
@@ -89,43 +71,25 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg").default}
+                      src={require("assets/img/hui.jpeg").default}
                     ></img>
-                    <h5 className="title">Mike Andrew</h5>
+                    <h5 className="title">Hui Xu</h5>
                   </a>
-                  <p className="description">michael24</p>
+                  <p className="description">hxu435</p>
                 </div>
                 <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
+                Software Engineer:Python, AWS, React, SQL, Go, JavaScript, Web Development, Full Stack, Algorithms, Mobile Apps
                 </p>
               </Card.Body>
               <hr></hr>
               <div className="button-container mr-auto ml-auto">
                 <Button
                   className="btn-simple btn-icon"
-                  href="#pablo"
+                  href="https://www.linkedin.com/in/hui-xu-3a06a5b9/"
                   onClick={(e) => e.preventDefault()}
                   variant="link"
                 >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
+                  <i className="fab fa-linkedin"></i>
                 </Button>
               </div>
             </Card>
@@ -149,43 +113,25 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg").default}
+                      src={require("assets/img/roy.png").default}
                     ></img>
-                    <h5 className="title">Mike Andrew</h5>
+                    <h5 className="title">Zongyang Hu</h5>
                   </a>
-                  <p className="description">michael24</p>
+                  <p className="description">zhu364</p>
                 </div>
                 <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
+                  Data Scientist
                 </p>
               </Card.Body>
               <hr></hr>
               <div className="button-container mr-auto ml-auto">
                 <Button
                   className="btn-simple btn-icon"
-                  href="#pablo"
+                  href="https://www.linkedin.com/in/zongyang-hu-data-science/"
                   onClick={(e) => e.preventDefault()}
                   variant="link"
                 >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
+                  <i className="fab fa-linkedin"></i>
                 </Button>
               </div>
             </Card>
@@ -207,43 +153,25 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg").default}
+                      src={require("assets/img/jiali.jpeg").default}
                     ></img>
-                    <h5 className="title">Mike Andrew</h5>
+                    <h5 className="title">Jiali Sun</h5>
                   </a>
-                  <p className="description">michael24</p>
+                  <p className="description">jsun368</p>
                 </div>
                 <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
+                  Software Development Engineer
                 </p>
               </Card.Body>
               <hr></hr>
               <div className="button-container mr-auto ml-auto">
                 <Button
                   className="btn-simple btn-icon"
-                  href="#pablo"
+                  href="https://www.linkedin.com/in/jialisun/"
                   onClick={(e) => e.preventDefault()}
                   variant="link"
                 >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
+                  <i className="fab fa-linkedin"></i>
                 </Button>
               </div>
             </Card>
