@@ -18,3 +18,5 @@
 * Execution: npm start
 
 
+**Public Dashboard URL: https://vaccine-distribution-app.vercel.app/**
+
