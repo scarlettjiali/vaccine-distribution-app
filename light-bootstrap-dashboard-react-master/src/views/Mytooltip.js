@@ -16,11 +16,11 @@ function Mytooltip({content,type}){
     }else if( type==="Cases"){
         return <>
                         <h3><b>{content.name}</b></h3>
-                        <p className="elect-total">total cases: <b>{content.cases}</b></p>
-                        <p className="elect-total">total death: <b>{content.deaths}</b></p>
-                        <p className="elect-total">new Case: <b>{content.newCases}</b></p>
-                        <p className="elect-total">new Deaths: <b>{content.newDeaths}</b></p>
-                        <p className="elect-total">riskLevel: <b>{content.riskLevels}</b></p>
+                        <p className="elect-total">Total cases: <b>{content.cases}</b></p>
+                        <p className="elect-total">Total death: <b>{content.deaths}</b></p>
+                        <p className="elect-total">New Case: <b>{content.newCases}</b></p>
+                        <p className="elect-total">New Deaths: <b>{content.newDeaths}</b></p>
+                        <p className="elect-total">RiskLevel: <b>{content.riskLevels}</b></p>
                     </>
     }else if( type==="Vactinnations"){
         return <>

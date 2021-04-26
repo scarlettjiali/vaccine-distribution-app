@@ -14,7 +14,7 @@ function Maps() {
     },
     {
         id: 'Vactinnations', 
-        label: 'Vactinnations',
+        label: 'Vaccination',
         selected: false,
     },
     {
