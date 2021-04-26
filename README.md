@@ -4,7 +4,9 @@
 ### Machine Learning Model
 
 * Package Description:  scikit-learn(scaler, metrics, lasso, ridge, RandomForestRegressor, GradientBoostingRegressor). xgb(XGBClassifier, XGBRegressor).
-* Installation: pip install scikit-learn, pip install xgboost
+* Installation: 
+  * pip install scikit-learn
+  * pip install xgboost
 * Execution: run CSE6242_team124.ipynb in jupyter
 
 ### Visualization Dashboard
@@ -15,7 +17,11 @@
   * chartist: We use this package to draw our dashboard graphs
 
 * Installation: npm install
-* Execution: npm start
+* Execution: 
+  * cd VaccinationDistributionReactApp
+  * npm install
+  * npm start
+  * Debug server will be hosted in http://localhost:3000/
 
 
 **Public Dashboard URL: https://vaccine-distribution-app.vercel.app/**
