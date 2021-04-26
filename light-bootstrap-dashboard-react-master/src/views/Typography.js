@@ -2,11 +2,7 @@ import React from "react";
 
 // react-bootstrap components
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
   Container,
   Row,
   Col,
@@ -20,120 +16,45 @@ function Typography() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Light Bootstrap Table Heading</Card.Title>
-                <p className="card-category">
-                  Created using Montserrat Font Family
-                </p>
+                <Card.Title as="h4">Covid 19 New Cases Prediction</Card.Title>
               </Card.Header>
               <Card.Body>
+
                 <div className="typography-line">
-                  <h1>
-                    <span>Header 1</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h1>
-                </div>
-                <div className="typography-line">
-                  <h2>
-                    <span>Header 2</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h2>
-                </div>
-                <div className="typography-line">
-                  <h3>
-                    <span>Header 3</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h3>
-                </div>
-                <div className="typography-line">
-                  <h4>
-                    <span>Header 4</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h4>
-                </div>
-                <div className="typography-line">
-                  <h5>
-                    <span>Header 5</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h5>
-                </div>
-                <div className="typography-line">
-                  <h6>
-                    <span>Header 6</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h6>
+                  <p>
+                    <span>Data Source</span>The data that was used to perform this analysis was from 
+                    <a href="https://github.com/GoogleCloudPlatform/covid-19-open-data"> COVID-19 Open-Data: curating a fine-grained, global-scale data repository for SARS-CoV-2. </a>
+                    We conbined the 
+                    <a href="https://storage.googleapis.com/covid19-open-data/v2/main.csv"> cases data </a>
+                    and 
+                    <a href="https://storage.googleapis.com/covid19-open-data/v2/vaccinations.csv"> vaccination data </a> 
+                    for future prediction.
+                  </p>
                 </div>
                 <div className="typography-line">
                   <p>
-                    <span>Paragraph</span>I will be the leader of a company that
-                    ends up being worth billions of dollars, because I got the
-                    answers. I understand culture. I am the nucleus. I think
-                    that’s a responsibility that I have, to push possibilities,
-                    to show people, this is the level that things could be at.
+                    <span>Feature Selection</span>
+                    Feature selection is quite important for us since the dataset we built 
+                    has handreds features and will lead to overfitting if we directly 
+                    use that. We chose seven features with the combination of the results from 
+                    correlation matrix, Lasso regression and XGBoost. The seven features we finally choosed are: 
+                    <b> new_tested, average_temperature, total_deceased, new_persons_fully_vaccinated, total_persons_fully_vaccinated, new_vaccine_doses_administered, population, new_confirmed</b>
+                    <div className="alignImages">
+                      <img src={require("assets/img/prediction/correlation.png").default} alt="..." /> 
+                      <img src={require("assets/img/prediction/lasso.png").default} alt="..." />
+                      <img src={require("assets/img/prediction/xgboost.png").default} alt="..."/>
+                    </div>
                   </p>
                 </div>
                 <div className="typography-line">
-                  <span>Quote</span>
-                  <blockquote>
-                    <p className="blockquote blockquote-primary">
-                      "I will be the leader of a company that ends up being
-                      worth billions of dollars, because I got the answers. I
-                      understand culture. I am the nucleus. I think that’s a
-                      responsibility that I have, to push possibilities, to show
-                      people, this is the level that things could be at."{" "}
-                      <br></br>
-                      <br></br>
-                      <small>- Noaa</small>
-                    </p>
-                  </blockquote>
-                </div>
-                <div className="typography-line">
-                  <span>Muted Text</span>
-                  <p className="text-muted">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
+                  <p>
+                    <span>Prediction Model</span>We tested sevarl models in new cases prediction, such as Lasso, Ridge, Random forest and gradient boosted trees. 
+                    From our evaluation we found random forest was able to produce the lowest error in its predictions. We tuned hyper parameters for max_depth, min_samples_leaf and n_estimators. 
+                    And found a best set of parameters <b>'max_depth': 15, 'min_samples_leaf': 2, 'n_estimators': 200</b> with <b>R2 = 0.88</b>
+                    <div className="singleImages">
+                      <img src={require("assets/img/prediction/prediction.png").default} alt="..." width="800"/> 
+                    </div>
                   </p>
-                </div>
-                <div className="typography-line">
-                  <span>Primary Text</span>
-                  <p className="text-primary">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Info Text</span>
-                  <p className="text-info">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Success Text</span>
-                  <p className="text-success">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Warning Text</span>
-                  <p className="text-warning">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Danger Text</span>
-                  <p className="text-danger">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <h2>
-                    <span>Small Tag</span>
-                    Header with small subtitle <br></br>
-                    <small>Use "small" tag for the headers</small>
-                  </h2>
                 </div>
               </Card.Body>
             </Card>
